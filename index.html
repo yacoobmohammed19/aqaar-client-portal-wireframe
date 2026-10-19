@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aqaar Client Portal — Interactive Wireframe (Rev 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F1C; --ink2:#23413C; --muted:#6A7D79; --line:#E3E8E5; --bg:#F5F3EE; --card:#FFFFFF;
+  --emerald:#0E4D45; --emerald2:#136B5F; --emerald3:#E6F1EE; --gold:#C9A45C; --gold2:#F6EEDC;
+  --red:#B4412F; --red2:#FBE9E5; --amber:#B7791F; --amber2:#FDF3DF; --blue:#2F5DA8; --blue2:#E7EEF9; --green:#1E7B4F; --green2:#E3F4EA;
+  --shadow:0 1px 2px rgba(11,31,28,.05),0 12px 32px rgba(11,31,28,.07);
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.serif{font-family:Fraunces,Georgia,serif}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+a{color:var(--emerald2)}
+
+/* ---------- Login ---------- */
+#login{position:fixed;inset:0;z-index:50;display:grid;grid-template-columns:1.1fr 1fr;background:var(--card);transition:opacity .6s,transform .6s}
+#login.hide{opacity:0;transform:scale(1.02);pointer-events:none}
+.lg-art{position:relative;overflow:hidden;background:radial-gradient(1200px 600px at 20% 10%,#1B7466 0%,#0E4D45 45%,#082F2A 100%);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:space-between}
+.lg-art svg.pattern{position:absolute;inset:0;width:100%;height:100%;opacity:.13}
+.lg-art h1{font-family:Fraunces,serif;font-weight:500;font-size:48px;line-height:1.08;max-width:520px;position:relative}
+.lg-art h1 em{color:var(--gold);font-style:normal}
+.lg-art p{opacity:.8;max-width:460px;margin-top:18px;font-size:16px;position:relative}
+.lg-stats{display:flex;gap:36px;position:relative}
+.lg-stats b{display:block;font-family:Fraunces,serif;font-size:28px;font-weight:500;color:var(--gold)}
+.lg-stats span{font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
+.lg-form{display:flex;align-items:center;justify-content:center;padding:40px}
+.lg-box{width:100%;max-width:380px}
+.lg-box h2{font-family:Fraunces,serif;font-weight:500;font-size:30px;margin:28px 0 6px}
+.lg-box .sub{color:var(--muted);margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:6px;letter-spacing:.02em}
+.field input,.field select{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:#fff;outline:none;transition:border .2s,box-shadow .2s}
+.field input:focus,.field select:focus{border-color:var(--emerald2);box-shadow:0 0 0 4px rgba(19,107,95,.12)}
+.otp{display:flex;gap:8px}
+.otp input{width:48px;height:52px;text-align:center;font-size:20px;font-weight:600;border:1px solid var(--line);border-radius:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#E8CF97);display:grid;place-items:center;color:var(--emerald);font-family:Fraunces,serif;font-size:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:10px;border:1px solid transparent;font-weight:600;cursor:pointer;transition:transform .15s,background .2s,box-shadow .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--emerald);color:#fff;box-shadow:0 6px 16px rgba(14,77,69,.25)}
+.btn-primary:hover{background:var(--emerald2)}
+.btn-gold{background:var(--gold);color:#1d1606}
+.btn-ghost{background:#fff;border-color:var(--line)}
+.btn-ghost:hover{border-color:#cdd6d2}
+.btn-sm{height:32px;padding:0 12px;font-size:13px;border-radius:8px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ---------- Shell ---------- */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+aside{background:var(--emerald);color:#DDEBE7;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+aside .brand{color:#fff;padding:4px 10px 24px}
+aside .brand small{display:block;font-weight:500;font-size:11px;opacity:.6;letter-spacing:.08em;text-transform:uppercase}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#CFE2DD;text-decoration:none;font-weight:500;margin-bottom:2px;transition:background .2s,color .2s;cursor:pointer}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.active{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+.nav svg{width:18px;height:18px;flex:none;opacity:.9}
+.nav .count{margin-left:auto;background:var(--gold);color:#1d1606;font-size:11px;font-weight:700;border-radius:99px;padding:1px 7px}
+.nav-label{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:18px 12px 6px}
+.side-card{margin-top:auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;font-size:12.5px}
+.side-card b{color:#fff;display:block;margin-bottom:4px}
+main{min-width:0}
+header.top{height:68px;display:flex;align-items:center;gap:16px;padding:0 32px;background:rgba(245,243,238,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line)}
+.search{flex:1;max-width:420px;position:relative}
+.search input{width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 14px 0 38px;background:#fff}
+.search svg{position:absolute;left:12px;top:11px;width:18px;height:18px;color:var(--muted)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.api-pill{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;background:var(--amber2);color:var(--amber);border:1px solid #F1DDB3;border-radius:99px;padding:6px 12px}
+.api-pill i{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(183,121,31,.5)}70%{box-shadow:0 0 0 8px rgba(183,121,31,0)}100%{box-shadow:0 0 0 0 rgba(183,121,31,0)}}
+.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;position:relative}
+.icon-btn svg{width:18px;height:18px}
+.icon-btn .dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fff}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--gold2);color:var(--emerald);display:grid;place-items:center;font-weight:700}
+.lang{height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-weight:600;cursor:pointer}
+.page{padding:28px 32px 60px;max-width:1360px;animation:fadeUp .45s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.page-head h1{font-family:Fraunces,serif;font-weight:500;font-size:30px;letter-spacing:-.01em}
+.page-head p{color:var(--muted);margin-top:2px}
+.crumb{font-size:12px;color:var(--muted);margin-bottom:4px}
+
+/* ---------- Cards / grid ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0}
+.card-h h3{font-size:15px;font-weight:600}
+.card-b{padding:18px 20px 20px}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:1fr 1fr}
+.g-main{grid-template-columns:1.65fr 1fr}
+.kpi{padding:18px 20px;position:relative;overflow:hidden}
+.kpi .lbl{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:6px}
+.kpi .val{font-family:Fraunces,serif;font-size:28px;font-weight:500;margin-top:6px;letter-spacing:-.01em}
+.kpi .val small{font-family:Inter;font-size:12px;color:var(--muted);font-weight:600;margin-right:4px}
+.kpi .foot{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi.hero{background:linear-gradient(135deg,var(--emerald) 0%,#0A3A34 100%);color:#fff;border:none}
+.kpi.hero .lbl,.kpi.hero .foot,.kpi.hero .val small{color:rgba(255,255,255,.7)}
+.kpi.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;border:26px solid rgba(201,164,92,.18)}
+.bar{height:8px;border-radius:99px;background:var(--emerald3);overflow:hidden;display:flex}
+.bar i{display:block;height:100%;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.trend{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px}
+.up{background:var(--green2);color:var(--green)}
+
+/* ---------- Tables ---------- */
+table{width:100%;border-collapse:collapse}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:13px 12px;border-bottom:1px solid #EEF1EF;vertical-align:middle}
+tr.click{cursor:pointer;transition:background .15s}
+tr.click:hover{background:#F8FAF9}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.c-green{background:var(--green2);color:var(--green)}
+.c-amber{background:var(--amber2);color:var(--amber)}
+.c-blue{background:var(--blue2);color:var(--blue)}
+.c-red{background:var(--red2);color:var(--red)}
+.c-grey{background:#EEF0EF;color:#5B6664}
+.c-gold{background:var(--gold2);color:#8A6A25}
+.tbl-wrap{overflow:auto}
+
+/* ---------- Journey ---------- */
+.journey{display:flex;gap:0;overflow-x:auto;padding:6px 2px 4px}
+.j-step{flex:1;min-width:92px;text-align:center;position:relative}
+.j-step::before{content:"";position:absolute;top:15px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0}
+.j-step:first-child::before{display:none}
+.j-step.done::before,.j-step.now::before{background:var(--emerald2)}
+.j-dot{width:32px;height:32px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-size:12px;font-weight:700;background:#fff;border:2px solid var(--line);color:var(--muted);position:relative;z-index:1}
+.j-step.done .j-dot{background:var(--emerald2);border-color:var(--emerald2);color:#fff}
+.j-step.now .j-dot{border-color:var(--gold);color:var(--emerald);background:var(--gold2);box-shadow:0 0 0 6px rgba(201,164,92,.2)}
+.j-step span{font-size:11.5px;color:var(--ink2);font-weight:500;display:block;line-height:1.3}
+
+/* ---------- Timeline ---------- */
+.tl{list-style:none}
+.tl li{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #E7ECE9}
+.tl li:last-child{border:none}
+.tl .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none}
+.tl .ic svg{width:16px;height:16px}
+.tl b{font-weight:600;font-size:13.5px}
+.tl small{display:block;color:var(--muted);font-size:12px}
+
+/* ---------- Wizard ---------- */
+.steps{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
+.step i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;background:#EEF1EF}
+.step.on{color:var(--emerald);border-color:var(--emerald2);box-shadow:0 0 0 3px rgba(19,107,95,.1)}
+.step.on i{background:var(--emerald);color:#fff}
+.step.ok i{background:var(--green);color:#fff}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.drop{border:2px dashed #CFDAD6;border-radius:14px;padding:26px;text-align:center;color:var(--muted);background:#FAFCFB;transition:all .2s;cursor:pointer}
+.drop:hover{border-color:var(--emerald2);background:var(--emerald3);color:var(--emerald)}
+.doc-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-top:10px;background:#fff}
+.doc-row .ext{width:36px;height:36px;border-radius:8px;background:var(--red2);color:var(--red);display:grid;place-items:center;font-size:11px;font-weight:700}
+.debtor-card{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;background:#fff;transition:border .2s}
+.debtor-card.bad{border-color:#E8B3A8;background:#FFFBFA}
+.seg{display:inline-flex;background:#EEF1EF;border-radius:10px;padding:3px;gap:2px}
+.seg button{border:none;background:none;padding:7px 12px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--emerald);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:12px;font-size:13px;align-items:flex-start}
+.alert svg{width:18px;height:18px;flex:none;margin-top:1px}
+.a-red{background:var(--red2);color:#7E2C1F}
+.a-amber{background:var(--amber2);color:#7A5214}
+.a-green{background:var(--green2);color:#185E3D}
+.a-blue{background:var(--blue2);color:#244A86}
+
+/* ---------- Drawer / modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(8,28,25,.45);backdrop-filter:blur(2px);z-index:40;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,96vw);background:var(--bg);z-index:41;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.15)}
+.drawer.on{transform:none}
+.drawer-h{padding:20px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;background:#fff}
+.drawer-h h2{font-family:Fraunces,serif;font-weight:500;font-size:22px}
+.drawer-b{padding:22px 26px;overflow:auto;flex:1}
+.drawer-f{padding:16px 26px;border-top:1px solid var(--line);background:#fff;display:flex;gap:10px;justify-content:flex-end;align-items:center}
+.inv-row{display:grid;grid-template-columns:1.3fr 1fr .9fr .9fr 1fr 32px;gap:8px;align-items:end;margin-bottom:8px}
+.inv-row input,.inv-row select{height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;width:100%;background:#fff;font-size:13px}
+.inv-row .x{width:32px;height:38px;border:none;background:none;cursor:pointer;color:var(--muted);font-size:18px}
+.inv-row.dup input{border-color:#E8B3A8;background:#FFF7F5}
+.econ{background:linear-gradient(160deg,#0E4D45,#0A332E);color:#fff;border-radius:16px;padding:20px}
+.econ .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
+.econ .row:last-child{border:none}
+.econ .row span{opacity:.72}
+.econ .big{font-family:Fraunces,serif;font-size:30px;color:var(--gold);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.lim{margin-top:14px}
+.lim .bar{height:10px;background:#EAF0EE}
+.lim-legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.lim-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+
+/* ---------- Trade detail ---------- */
+.lifecycle{display:flex;flex-wrap:wrap;gap:6px}
+.lc{font-size:11.5px;font-weight:600;padding:6px 10px;border-radius:8px;background:#EEF1EF;color:#7A8784;position:relative}
+.lc.done{background:var(--emerald3);color:var(--emerald)}
+.lc.now{background:var(--gold);color:#1d1606;box-shadow:0 4px 12px rgba(201,164,92,.4)}
+.tw{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tw div{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;font-size:12.5px}
+.tw div b{display:block;font-size:13px;margin:6px 0 2px}
+.tw .ok{border-color:#BFE0CF;background:#F5FBF8}
+.tw .run{border-color:var(--gold);background:#FFFCF4}
+.tw .spin{width:14px;height:14px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;display:inline-block;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sched{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.sched th{position:sticky;top:0;background:#fff;z-index:1}
+.sched td{padding:8px 12px;font-size:12.5px}
+.sched tr.today td{background:var(--gold2);font-weight:600}
+.lock{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--emerald)}
+
+/* ---------- Repayment ---------- */
+.ref-box{border:2px solid var(--gold);background:linear-gradient(135deg,#FFFCF4,#FBF4E3);border-radius:16px;padding:22px;text-align:center}
+.ref-box .code{font-family:"JetBrains Mono",monospace;font-size:26px;letter-spacing:.06em;color:var(--emerald);margin:8px 0 12px}
+.alloc-input{width:130px;height:34px;border:1px solid var(--line);border-radius:8px;padding:0 10px;text-align:right;font-variant-numeric:tabular-nums}
+.alloc-input.err{border-color:var(--red);background:var(--red2)}
+.cb{width:18px;height:18px;accent-color:var(--emerald)}
+.sticky-sum{position:sticky;bottom:16px;margin-top:16px}
+
+/* ---------- Toast ---------- */
+#toasts{position:fixed;bottom:24px;right:24px;z-index:60;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:13px;display:flex;gap:10px;align-items:center;animation:tin .35s ease;max-width:380px}
+.toast i{width:22px;height:22px;border-radius:50%;background:var(--gold);color:#1d1606;display:grid;place-items:center;font-style:normal;font-weight:700;flex:none}
+@keyframes tin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ---------- Wireframe ribbon ---------- */
+.wf-ribbon{position:fixed;left:264px;bottom:16px;z-index:30;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:11.5px;color:var(--muted);box-shadow:var(--shadow);display:flex;gap:8px;align-items:center}
+.wf-ribbon b{color:var(--ink)}
+.wf-ribbon .cc{width:18px;height:18px}
+
+.hide{display:none!important}
+.muted{color:var(--muted)}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.flex{display:flex;gap:10px;align-items:center}
+.between{justify-content:space-between}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.ring-wrap{display:flex;align-items:center;gap:22px}
+.legend-list{list-style:none;flex:1}
+.legend-list li{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #F0F2F1}
+.legend-list li span{display:flex;align-items:center;gap:8px}
+.legend-list i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.notif{display:flex;gap:14px;padding:14px 18px;border-bottom:1px solid #EEF1EF}
+.notif.unread{background:#FBFDFC;box-shadow:inset 3px 0 0 var(--gold)}
+.notif .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
+.notif .ic svg{width:18px;height:18px}
+
+@media (max-width:1100px){.g4{grid-template-columns:1fr 1fr}.g-main,.g3{grid-template-columns:1fr}}
+@media (max-width:820px){.wf-ribbon{left:16px}.app{grid-template-columns:1fr}aside{display:none}#login{grid-template-columns:1fr}.lg-art{display:none}.g2,.fgrid{grid-template-columns:1fr}.tw{grid-template-columns:1fr 1fr}.page{padding:20px 16px}header.top{padding:0 16px}.api-pill span{display:none}.inv-row{grid-template-columns:1fr 1fr}}
+[dir=rtl] .nav a.active{box-shadow:inset -3px 0 0 var(--gold)}
+[dir=rtl] .drawer{right:auto;left:0;transform:translateX(-100%)}
+[dir=rtl] .drawer.on{transform:none}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<section id="login">
+  <div class="lg-art">
+    <svg class="pattern" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice"><defs><pattern id="geo" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M40 0 L50 30 L80 40 L50 50 L40 80 L30 50 L0 40 L30 30Z" fill="none" stroke="#C9A45C" stroke-width="1.2"/><circle cx="40" cy="40" r="12" fill="none" stroke="#C9A45C" stroke-width="1"/></pattern></defs><rect width="400" height="400" fill="url(#geo)"/></svg>
+    <div class="brand" style="position:relative"><div class="logo">ع</div>AQAAR <span style="opacity:.6;font-weight:500">Finance</span></div>
+    <div>
+      <h1>Working capital, <em>unlocked daily.</em></h1>
+      <p>Term finance for growth, invoice discounting for daily cash flow — both Sharia-compliant, both in one secure portal.</p>
+    </div>
+    <div class="lg-stats">
+      <div><b>24h</b><span>Trade review target</span></div>
+      <div><b>Tawarruq</b><span>Sharia-compliant</span></div>
+      <div><b>1 ref</b><span>Pay many trades</span></div>
+    </div>
+  </div>
+  <div class="lg-form">
+    <div class="lg-box">
+      <div class="brand"><div class="logo">ع</div>AQAAR</div>
+      <h2 id="lgTitle">Welcome back</h2>
+      <p class="sub" id="lgSub">Sign in with your Business ID to access your financing.</p>
+      <div id="lgStep1">
+        <div class="field"><label>Business ID</label><input value="BIZ-100482" id="bizId"></div>
+        <div class="field"><label>Registered email or mobile</label><input value="finance@alnoor-group.sa"></div>
+        <button class="btn btn-primary btn-block" onclick="lgNext()">Send one-time code →</button>
+      </div>
+      <div id="lgStep2" class="hide">
+        <div class="field"><label>6-digit code sent to fin•••@alnoor-group.sa</label>
+          <div class="otp"><input maxlength="1" value="4"><input maxlength="1" value="8"><input maxlength="1" value="2"><input maxlength="1" value="9"><input maxlength="1" value="1"><input maxlength="1" value="6"></div></div>
+        <button class="btn btn-primary btn-block" onclick="enterApp()">Verify &amp; sign in</button>
+      </div>
+      <p class="hint mt16">Wireframe demo — any values work. Authentication method to be confirmed against Beezr API.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APP ================= -->
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo">ع</div><div>AQAAR<small>Client Portal</small></div></div>
+    <nav class="nav" id="nav">
+      <a data-r="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Overview</a>
+      <a data-r="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>Business Profile</a>
+      <div class="nav-label">Term Finance</div>
+      <a data-r="tf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>My Term Finance</a>
+      <a data-r="tfapply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>Apply for Term Finance</a>
+      <div class="nav-label">Invoice Discounting</div>
+      <a data-r="facility"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>Credit Facility</a>
+      <a data-r="trades"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Trades<span class="count" id="navTrades">5</span></a>
+      <a data-r="repay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg>Repayments</a>
+      <a data-r="debtors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7M17 11a3 3 0 100-6M22 21c0-3-2-5-4-6"/></svg>Debtors</a>
+      <div class="nav-label">Requests</div>
+      <a data-r="apply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>Facility Request</a>
+      <a data-r="increase"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>Limit Increase</a>
+      <a data-r="notifs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>Notifications<span class="count">3</span></a>
+    </nav>
+    <div class="side-card"><b>Al Noor Trading Group</b>Business ID BIZ-100482<br>Term Finance TFN-00087 · <span style="color:var(--gold)">Repaying</span><br>Facility FAC-00231 · <span style="color:var(--gold)">Active</span></div>
+  </aside>
+
+  <main>
+    <header class="top">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Search trades, invoices, references…"></div>
+      <div class="top-right">
+        <div class="api-pill" title="Screens use mock data. Wiring to Beezr endpoints once API specification is received."><i></i><span>Mock data · awaiting Beezr API spec</span></div>
+        <button class="lang" onclick="toggleDir()" id="langBtn">عربي</button>
+        <div class="icon-btn" onclick="go('notifs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span class="dot"></span></div>
+        <div class="avatar">AN</div>
+      </div>
+    </header>
+    <div id="view"></div>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer"></div>
+<div id="toasts"></div>
+<div class="wf-ribbon"><svg class="cc" viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="#2563EB" stroke-width="18"/><path d="M133.2,60 A52,52 0 1,0 133.2,140" fill="none" stroke="#EC4899" stroke-width="24" stroke-linecap="round"/></svg><span><b>Interactive wireframe Rev 3</b> · prepared by CocoCorp · Term Finance (BRD v3.2) + Invoice Discounting (CR BRD v4.0)</span></div>
+
+<script>
+/* ================= DATA (mock — to be replaced by Beezr API) ================= */
+const TODAY = new Date('2026-09-30');
+const FAC = {id:'FAC-00231', limit:5000000, rate:0.12, start:'2026-06-01', expiry:'2027-05-31', status:'Active'};
+const DEBTORS = [
+  {id:'DBT-0091', name:'Al-Rashed Trading Co.', cr:'1010458821', cap:1500000, mit:'Insurance', mitDetail:'Coface policy #CF-22871'},
+  {id:'DBT-0137', name:'Najd Cement Company', cr:'1010221907', cap:1200000, mit:'Alternative security', mitDetail:'Cession of receivables'},
+  {id:'DBT-0158', name:'Gulf Medical Supplies', cr:'2050117734', cap:1000000, mit:'Insurance', mitDetail:'Allianz Trade #AT-90412'},
+  {id:'DBT-0202', name:'Tihama Logistics', cr:'4030339120', cap:800000, mit:'Risk accepted by management', mitDetail:'Approved 14 Jun 2026'}
+];
+const TRADES = [
+  {id:'TRD-1033', days:60, disb:'2026-06-20', status:'Paid / Closed', inv:[
+    {no:'INV-7710', debtor:'DBT-0091', date:'2026-06-10', due:'2026-08-19', val:220000, paid:220000},
+    {no:'INV-7718', debtor:'DBT-0202', date:'2026-06-12', due:'2026-08-19', val:160000, paid:160000}]},
+  {id:'TRD-1042', days:90, disb:'2026-08-15', status:'Repayment Pending', inv:[
+    {no:'INV-8120', debtor:'DBT-0091', date:'2026-08-02', due:'2026-11-13', val:385000, paid:150000},
+    {no:'INV-8134', debtor:'DBT-0137', date:'2026-08-05', due:'2026-11-13', val:255000, paid:0}]},
+  {id:'TRD-1047', days:60, disb:'2026-09-01', status:'Repayment Pending', inv:[
+    {no:'INV-8301', debtor:'DBT-0158', date:'2026-08-24', due:'2026-10-31', val:310000, paid:0},
+    {no:'INV-8309', debtor:'DBT-0091', date:'2026-08-26', due:'2026-10-31', val:210000, paid:0}]},
+  {id:'TRD-1051', days:75, disb:null, status:'Tawarruq In Progress', inv:[
+    {no:'INV-8420', debtor:'DBT-0137', date:'2026-09-14', due:'2026-12-10', val:480000, paid:0},
+    {no:'INV-8422', debtor:'DBT-0158', date:'2026-09-15', due:'2026-12-10', val:275000, paid:0},
+    {no:'INV-8431', debtor:'DBT-0202', date:'2026-09-16', due:'2026-12-10', val:155000, paid:0}]},
+  {id:'TRD-1058', days:45, disb:null, status:'Pending Document Review', inv:[
+    {no:'INV-8517', debtor:'DBT-0202', date:'2026-09-25', due:'2026-11-20', val:420000, paid:0}]}
+];
+const LIFECYCLE = ['Submitted','Pending Document Review','Documents Approved','Approved','Tawarruq In Progress','Ready for Disbursement','Disbursed','Repayment Pending','Payment Verification Pending','Paid / Closed'];
+const ACTIVE = ['Approved','Tawarruq In Progress','Ready for Disbursement','Disbursed','Repayment Pending','Payment Verification Pending'];
+const PENDING = ['Submitted','Pending Document Review','Documents Approved','Pending Limit Increase'];
+let REPAYS = [{ref:'RRQ-26-0917-4KD2', date:'2026-09-17', amount:150000, lines:1, status:'Verified / Paid'}];
+
+/* ================= HELPERS ================= */
+const $ = s=>document.querySelector(s);
+const fmt = n=>Math.round(n).toLocaleString('en-US');
+const sar = n=>'<small>SAR</small>'+fmt(n);
+const dname = id=>(DEBTORS.find(d=>d.id===id)||{}).name||id;
+const tval = t=>t.inv.reduce((a,i)=>a+i.val,0);
+const tout = t=>t.inv.reduce((a,i)=>a+(i.val-i.paid),0);
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const dfmt=d=>new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+function econ(rv,days,rate){const periods=365/days;const eff=rate/periods;return {periods,eff,profit:rv*eff,disb:rv-rv*eff,daily:rv*rate/365}}
+function util(){
+  let used=0,pending=0;
+  TRADES.forEach(t=>{ if(ACTIVE.includes(t.status)) used+=tout(t); else if(PENDING.includes(t.status)) pending+=tval(t); });
+  return {used,pending,avail:FAC.limit-used-pending};
+}
+function debtorUse(id){let u=0;TRADES.forEach(t=>{if(ACTIVE.includes(t.status)||PENDING.includes(t.status))t.inv.forEach(i=>{if(i.debtor===id)u+=i.val-i.paid})});return u}
+function chip(s){
+  const m={'Paid / Closed':'c-green','Verified / Paid':'c-green','Active':'c-green','Approved':'c-green','Accepted':'c-green','Repayment Pending':'c-blue','Disbursed':'c-blue','Tawarruq In Progress':'c-gold','Ready for Disbursement':'c-gold','Pending Document Review':'c-amber','Pending Payment Verification':'c-amber','Submitted':'c-amber','Limit Check Failed':'c-red','Rejected':'c-red','Partially Paid':'c-blue','Unpaid':'c-grey','Paid in Full':'c-green','Draft':'c-grey'};
+  return `<span class="chip ${m[s]||'c-grey'}">${s}</span>`;
+}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.innerHTML='<i>✓</i><div>'+msg+'</div>';$('#toasts').appendChild(t);setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity=0;setTimeout(()=>t.remove(),400)},3600)}
+function animateBars(){requestAnimationFrame(()=>document.querySelectorAll('[data-w]').forEach(el=>el.style.width=el.dataset.w))}
+function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const end=+el.dataset.count;let s=null;const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/900,1);el.textContent=fmt(end*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+
+/* ================= LOGIN ================= */
+function lgNext(){$('#lgStep1').classList.add('hide');$('#lgStep2').classList.remove('hide');$('#lgTitle').textContent='Check your inbox';$('#lgSub').textContent='We sent a one-time code to your registered contact.'}
+function enterApp(){$('#login').classList.add('hide');setTimeout(()=>toast('Signed in as <b>Al Noor Trading Group</b>'),500)}
+function toggleDir(){const h=document.documentElement;const rtl=h.dir==='rtl';h.dir=rtl?'ltr':'rtl';h.lang=rtl?'en':'ar';$('#langBtn').textContent=rtl?'عربي':'English';toast(rtl?'Switched to English':'RTL layout preview — Arabic copy to be supplied')}
+
+/* ================= ROUTER ================= */
+const ROUTES={dashboard,facility,trades,trade,repay,debtors,apply,increase,notifs,tf,tfapply,profile};
+function go(r,arg){location.hash=r+(arg?'/'+arg:'')}
+function render(){
+  const [r,arg]=(location.hash.slice(1)||'dashboard').split('/');
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.r===r||(r==='trade'&&a.dataset.r==='trades')));
+  $('#view').innerHTML='<div class="page">'+(ROUTES[r]||dashboard)(arg)+'</div>';
+  window.scrollTo(0,0);animateBars();countUp();
+  if(ROUTES[r]&&ROUTES[r].after)ROUTES[r].after(arg);
+}
+window.addEventListener('hashchange',render);
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.r));
+
+/* ================= DASHBOARD ================= */
+function ring(parts,total){
+  const R=62,C=2*Math.PI*R;let off=0;
+  const segs=parts.map(p=>{const len=C*p.v/total;const s=`<circle r="${R}" cx="80" cy="80" fill="none" stroke="${p.c}" stroke-width="18" stroke-dasharray="0 ${C}" data-dash="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)" style="transition:stroke-dasharray 1.1s cubic-bezier(.2,.8,.2,1)"/>`;off+=len;return s}).join('');
+  return `<svg width="160" height="160" viewBox="0 0 160 160"><circle r="${R}" cx="80" cy="80" fill="none" stroke="#EEF2F0" stroke-width="18"/>${segs}<text x="80" y="76" text-anchor="middle" font-family="Fraunces" font-size="24" fill="#0B1F1C">${Math.round((parts[0].v+parts[1].v)/total*100)}%</text><text x="80" y="96" text-anchor="middle" font-size="11" fill="#6A7D79">utilised</text></svg>`;
+}
+function dashboard(){
+  const u=util();
+  const open=TRADES.filter(t=>t.status!=='Paid / Closed');
+  const dueSoon=TRADES.filter(t=>t.disb&&t.status==='Repayment Pending').map(t=>({t,due:addDays(t.disb,t.days),out:tout(t)})).sort((a,b)=>a.due-b.due);
+  const stage=7;
+  const stages=['Onboarding','Facility request','Facility created','Trade submitted','Limit check','Review & approval','Schedule','Tawarruq','Disbursement','Repayment request','Reconciliation','Closure'];
+  return `
+  <div class="page-head"><div><div class="crumb">Good afternoon, Ahmed</div><h1>Your financing overview</h1><p>Approved for <b>Term Finance</b> and <b>Invoice Discounting</b> · one Business ID, one profile</p></div>
+    <div class="flex"><button class="btn btn-ghost" onclick="go('repay')">Make a repayment</button><button class="btn btn-primary" onclick="openTrade()">+ New trade</button></div></div>
+  <div class="card" style="margin-bottom:18px"><div class="card-h"><h3>Total exposure across your products</h3><span class="chip c-blue">Combined view · both products</span></div>
+    <div class="card-b"><div class="grid g3">
+      <div class="kpi" style="padding:0"><div class="lbl">Term Finance outstanding</div><div class="val">${sar(tfOut())}</div><div class="foot">${TF.id} · next instalment ${dfmt(tfNext().date)} · <a style="cursor:pointer" onclick="go('tf')">Open →</a></div></div>
+      <div class="kpi" style="padding:0"><div class="lbl">Invoice Discounting exposure</div><div class="val">${sar(u.used+u.pending)}</div><div class="foot">${FAC.id} · active + reserved trades · <a style="cursor:pointer" onclick="go('facility')">Open →</a></div></div>
+      <div class="kpi" style="padding:0"><div class="lbl">Total with Aqaar</div><div class="val">${sar(tfOut()+u.used+u.pending)}</div><div class="foot">Shown only to customers approved for both products</div></div>
+    </div></div></div>
+  <h3 style="font-family:Fraunces,serif;font-weight:500;font-size:20px;margin:6px 0 12px">Invoice Discounting — ${FAC.id}</h3>
+  <div class="grid g4">
+    <div class="card kpi hero"><div class="lbl">Approved facility limit</div><div class="val"><small>SAR</small><span data-count="${FAC.limit}">0</span></div><div class="foot">Profit rate ${(FAC.rate*100).toFixed(1)}% p.a. · daily basis</div></div>
+    <div class="card kpi"><div class="lbl">Available to draw</div><div class="val"><small>SAR</small><span data-count="${u.avail}">0</span></div><div class="foot">After active &amp; reserved trades</div></div>
+    <div class="card kpi"><div class="lbl">Active exposure</div><div class="val"><small>SAR</small><span data-count="${u.used}">0</span></div><div class="foot">${TRADES.filter(t=>ACTIVE.includes(t.status)).length} trades outstanding</div></div>
+    <div class="card kpi"><div class="lbl">Pending / reserved <span class="trend up">+1 this week</span></div><div class="val"><small>SAR</small><span data-count="${u.pending}">0</span></div><div class="foot">Under Aqaar review</div></div>
+  </div>
+  <div class="grid g-main mt16">
+    <div class="card"><div class="card-h"><h3>Facility utilisation</h3><span class="muted" style="font-size:12px">Live · recalculated on every trade &amp; reconciliation</span></div>
+      <div class="card-b"><div class="ring-wrap"><div id="ring">${ring([{v:u.used,c:'#0E4D45'},{v:u.pending,c:'#C9A45C'},{v:u.avail,c:'#DCE7E3'}],FAC.limit)}</div>
+        <ul class="legend-list"><li><span><i style="background:#0E4D45"></i>Active exposure</span><b>SAR ${fmt(u.used)}</b></li><li><span><i style="background:#C9A45C"></i>Pending review (reserved)</span><b>SAR ${fmt(u.pending)}</b></li><li><span><i style="background:#DCE7E3"></i>Available</span><b>SAR ${fmt(u.avail)}</b></li><li><span class="muted">Available = Limit − Active − Reserved</span><span class="muted">REQ_057</span></li></ul></div>
+      </div></div>
+    <div class="card"><div class="card-h"><h3>Upcoming repayments</h3><a style="font-size:12.5px;cursor:pointer" onclick="go('repay')">Pay now →</a></div>
+      <div class="card-b"><ul class="tl">${dueSoon.map(x=>{const d=Math.round((x.due-TODAY)/864e5);return `<li><div class="ic" style="background:${d<45?'var(--amber2)':'var(--emerald3)'};color:${d<45?'var(--amber)':'var(--emerald)'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div><div style="flex:1"><b>${x.t.id}</b><small>Due ${dfmt(x.due)} · in ${d} days</small></div><div class="num"><b>SAR ${fmt(x.out)}</b><small>outstanding</small></div></li>`}).join('')}
+      <li><div class="ic" style="background:var(--green2);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div><b>Late settlement never costs more</b><small>Repayment value is fixed at approval — no penalties, no rebates.</small></div></li></ul></div></div>
+  </div>
+  <div class="card mt16"><div class="card-h"><h3>Where your latest trade is — TRD-1051</h3><a style="font-size:12.5px;cursor:pointer" onclick="go('trade','TRD-1051')">Open trade →</a></div>
+    <div class="card-b"><div class="journey">${stages.map((s,i)=>`<div class="j-step ${i<stage?'done':i===stage?'now':''}"><div class="j-dot">${i<stage?'✓':i+1}</div><span>${s}</span></div>`).join('')}</div></div></div>
+  <div class="grid g-main mt16">
+    <div class="card"><div class="card-h"><h3>Open trades</h3><a style="font-size:12.5px;cursor:pointer" onclick="go('trades')">View all →</a></div>
+      <div class="card-b tbl-wrap"><table><thead><tr><th>Trade</th><th>Invoices</th><th class="num">Repayment value</th><th>Days</th><th>Status</th></tr></thead><tbody>
+      ${open.map(t=>`<tr class="click" onclick="go('trade','${t.id}')"><td><b>${t.id}</b></td><td>${t.inv.length} · ${[...new Set(t.inv.map(i=>dname(i.debtor).split(' ')[0]))].join(', ')}</td><td class="num">SAR ${fmt(tval(t))}</td><td>${t.days}</td><td>${chip(t.status)}</td></tr>`).join('')}
+      </tbody></table></div></div>
+    <div class="card"><div class="card-h"><h3>Recent activity</h3></div><div class="card-b"><ul class="tl">
+      ${[['var(--gold2)','#8A6A25','Tawarruq commodity purchase confirmed','TRD-1051 · today 11:42'],['var(--amber2)','var(--amber)','Trade submitted for document review','TRD-1058 · 25 Sep'],['var(--green2)','var(--green)','Payment matched via bank reconciliation','RRQ-26-0917-4KD2 · SAR 150,000'],['var(--blue2)','var(--blue)','Funds disbursed','TRD-1047 · SAR 509,745 · 1 Sep']].map(a=>`<li><div class="ic" style="background:${a[0]};color:${a[1]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg></div><div><b>${a[2]}</b><small>${a[3]}</small></div></li>`).join('')}
+    </ul></div></div>
+  </div>`;
+}
+dashboard.after=()=>setTimeout(()=>document.querySelectorAll('#ring [data-dash]').forEach(c=>c.setAttribute('stroke-dasharray',c.dataset.dash)),60);
+
+/* ================= FACILITY ================= */
+function facility(){
+  const u=util();
+  return `<div class="page-head"><div><div class="crumb">Credit Facility</div><h1>${FAC.id}</h1><p>Linked to Business ID BIZ-100482 · Al Noor Trading Group</p></div><div class="flex">${chip('Active')}<button class="btn btn-ghost" onclick="go('increase')">Request limit increase</button></div></div>
+  <div class="grid g4">
+    ${[['Approved limit',FAC.limit],['Used limit',u.used],['Pending trade exposure',u.pending],['Available limit',u.avail]].map(k=>`<div class="card kpi"><div class="lbl">${k[0]}</div><div class="val">${sar(k[1])}</div></div>`).join('')}
+  </div>
+  <div class="grid g2 mt16">
+    <div class="card"><div class="card-h"><h3>Facility terms</h3></div><div class="card-b"><table>
+      ${[['Facility status','Active'],['Start date',dfmt(FAC.start)],['Expiry date',dfmt(FAC.expiry)],['Annual profit rate',(FAC.rate*100).toFixed(2)+'%'],['Daily rate',(FAC.rate/365*100).toFixed(4)+'%'],['Finance product','Invoice Discounting'],['Admin fee','To be confirmed (PRE_005)']].map(r=>`<tr><td class="muted">${r[0]}</td><td class="num"><b>${r[1]}</b></td></tr>`).join('')}
+    </table></div></div>
+    <div class="card"><div class="card-h"><h3>Debtor exposure caps</h3><a style="font-size:12.5px;cursor:pointer" onclick="go('debtors')">Manage →</a></div><div class="card-b">
+      ${DEBTORS.map(d=>{const used=debtorUse(d.id);const pct=Math.min(100,used/d.cap*100);return `<div style="margin-bottom:14px"><div class="flex between" style="font-size:13px"><b>${d.name}</b><span class="muted">SAR ${fmt(used)} / ${fmt(d.cap)}</span></div><div class="bar mt8"><i data-w="${pct}%" style="width:0;background:${pct>85?'var(--red)':pct>60?'var(--gold)':'var(--emerald2)'}"></i></div></div>`}).join('')}
+    </div></div>
+  </div>
+  <div class="card mt16"><div class="card-h"><h3>Limit change audit trail</h3><span class="muted" style="font-size:12px">REQ_077</span></div><div class="card-b tbl-wrap"><table><thead><tr><th>Date</th><th class="num">Previous</th><th class="num">Increase</th><th class="num">New limit</th><th>Approver</th></tr></thead><tbody>
+    <tr><td>14 Jun 2026</td><td class="num">—</td><td class="num">—</td><td class="num">SAR 3,500,000</td><td>Aqaar Credit Committee</td></tr>
+    <tr><td>02 Sep 2026</td><td class="num">SAR 3,500,000</td><td class="num" style="color:var(--green)">+ SAR 1,500,000</td><td class="num"><b>SAR 5,000,000</b></td><td>F. Al-Otaibi (Approver)</td></tr>
+  </tbody></table></div></div>`;
+}
+
+/* ================= TRADES ================= */
+let tradeFilter='All';
+function trades(){
+  const f=['All','Active','Under review','Closed'];
+  const list=TRADES.filter(t=>tradeFilter==='All'||(tradeFilter==='Active'&&ACTIVE.includes(t.status))||(tradeFilter==='Under review'&&PENDING.includes(t.status))||(tradeFilter==='Closed'&&t.status==='Paid / Closed'));
+  return `<div class="page-head"><div><div class="crumb">Trades under ${FAC.id}</div><h1>Trades</h1><p>Each trade bundles one or more invoices, across one or more debtors.</p></div><button class="btn btn-primary" onclick="openTrade()">+ New trade</button></div>
+  <div class="seg" style="margin-bottom:14px">${f.map(x=>`<button class="${x===tradeFilter?'on':''}" onclick="tradeFilter='${x}';render()">${x}</button>`).join('')}</div>
+  <div class="card"><div class="card-b tbl-wrap"><table><thead><tr><th>Trade ID</th><th>Debtors</th><th>Invoices</th><th class="num">Repayment value</th><th class="num">Disbursed</th><th>Days</th><th>Maturity</th><th>Status</th></tr></thead><tbody>
+  ${list.map(t=>{const e=econ(tval(t),t.days,FAC.rate);return `<tr class="click" onclick="go('trade','${t.id}')"><td><b>${t.id}</b></td><td>${[...new Set(t.inv.map(i=>dname(i.debtor)))].join('<br>')}</td><td>${t.inv.length}</td><td class="num"><b>SAR ${fmt(tval(t))}</b></td><td class="num">${t.disb?'SAR '+fmt(e.disb):'<span class="muted">—</span>'}</td><td>${t.days}</td><td>${t.disb?dfmt(addDays(t.disb,t.days)):'<span class="muted">On disbursement</span>'}</td><td>${chip(t.status)}</td></tr>`}).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ================= TRADE DETAIL ================= */
+function trade(id){
+  const t=TRADES.find(x=>x.id===id)||TRADES[1];const rv=tval(t);const e=econ(rv,t.days,FAC.rate);
+  const idx=LIFECYCLE.indexOf(t.status);
+  const twSteps=['Buy request','Commodity processing','Certificate generated','Sell request','Trade-back complete'];
+  const twAt=t.status==='Tawarruq In Progress'?2:(idx>=5?5:(idx<4?-1:0));
+  const start=t.disb?new Date(t.disb):addDays(TODAY,3);
+  let rows='';let cum=0;
+  for(let d=1;d<=t.days;d++){cum+=e.daily;const dt=addDays(start,d);const isToday=dt.toDateString()===TODAY.toDateString();rows+=`<tr class="${isToday?'today':''}"><td>${d}</td><td>${dfmt(dt)}</td><td class="num">${fmt(e.daily)}</td><td class="num">${fmt(Math.min(cum,e.profit))}</td><td class="num">${(Math.min(cum,e.profit)/e.profit*100).toFixed(1)}%</td><td class="num">${d===t.days?'<b>'+fmt(rv)+'</b>':'—'}</td><td>${d===t.days?chip(t.status==='Paid / Closed'?'Paid in Full':'Unpaid'):''}</td></tr>`}
+  return `<div class="page-head"><div><div class="crumb"><a onclick="go('trades')" style="cursor:pointer">Trades</a> / ${t.id}</div><h1>${t.id}</h1><p>${t.inv.length} invoice(s) · ${t.days}-day financing · ${FAC.id}</p></div><div class="flex">${chip(t.status)}${ACTIVE.includes(t.status)&&t.disb?`<button class="btn btn-primary" onclick="go('repay')">Repay invoices</button>`:''}</div></div>
+  <div class="card"><div class="card-b"><div class="lifecycle">${LIFECYCLE.map((s,i)=>`<span class="lc ${i<idx?'done':i===idx?'now':''}">${i<idx?'✓ ':''}${s}</span>`).join('')}</div></div></div>
+  <div class="grid g4 mt16">
+    <div class="card kpi hero"><div class="lbl">Repayment value (fixed)</div><div class="val">${sar(rv)}</div><div class="foot">Locked at approval · REQ_0144</div></div>
+    <div class="card kpi"><div class="lbl">Cash disbursed to you</div><div class="val">${sar(e.disb)}</div><div class="foot">Repayment value − profit</div></div>
+    <div class="card kpi"><div class="lbl">Profit (Effective rate ${(e.eff*100).toFixed(3)}%)</div><div class="val">${sar(e.profit)}</div><div class="foot">${(FAC.rate*100)}% p.a. ÷ ${e.periods.toFixed(2)} periods</div></div>
+    <div class="card kpi"><div class="lbl">Repayment date</div><div class="val" style="font-size:24px">${t.disb?dfmt(addDays(t.disb,t.days)):'On disbursement + '+t.days+'d'}</div><div class="foot">Disbursement date + ${t.days} days</div></div>
+  </div>
+  <div class="card mt16"><div class="card-h"><h3>Tawarruq — Sharia-compliant execution</h3><span class="muted" style="font-size:12px">Existing Aqaar flow, trade-specific inputs</span></div><div class="card-b"><div class="tw">
+    ${twSteps.map((s,i)=>`<div class="${i<twAt?'ok':i===twAt&&twAt<5?'run':''}">${i<twAt?'<span style="color:var(--green);font-weight:700">✓ Complete</span>':i===twAt&&twAt<5?'<span class="spin"></span> <span style="color:#8A6A25;font-weight:600">In progress</span>':'<span class="muted">Waiting</span>'}<b>${s}</b><span class="muted">Step ${i+1} of 5</span></div>`).join('')}
+  </div></div></div>
+  <div class="grid g-main mt16">
+    <div class="card"><div class="card-h"><h3>Daily repayment schedule</h3><span class="lock">${t.disb?'🔒 Locked on disbursement':'Preview — locks on disbursement'}</span></div><div class="card-b">
+      <div class="sched"><table><thead><tr><th>Day</th><th>Date</th><th class="num">Daily profit</th><th class="num">Cumulative</th><th class="num">% accrued</th><th class="num">Repayment</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="hint mt8">Daily accrual figures are informational only — early settlement does not reduce, and late settlement does not increase, the amount owed.</p></div></div>
+    <div class="card"><div class="card-h"><h3>Invoices</h3></div><div class="card-b">
+      ${t.inv.map(i=>{const st=i.paid>=i.val?'Paid in Full':i.paid>0?'Partially Paid':(PENDING.includes(t.status)?'Submitted':'Accepted');return `<div class="doc-row" style="align-items:flex-start"><div class="ext">PDF</div><div style="flex:1"><b>${i.no}</b><div class="muted" style="font-size:12px">${dname(i.debtor)} · due ${dfmt(i.due)}</div>${i.paid>0&&i.paid<i.val?`<div class="bar mt8"><i data-w="${i.paid/i.val*100}%" style="width:0;background:var(--blue)"></i></div><div class="hint">SAR ${fmt(i.paid)} paid of ${fmt(i.val)}</div>`:''}</div><div class="num"><b>SAR ${fmt(i.val)}</b><div class="mt8">${chip(st)}</div></div></div>`}).join('')}
+    </div></div>
+  </div>`;
+}
+
+/* ================= NEW TRADE DRAWER ================= */
+let draft=null;
+function openTrade(){
+  draft={days:60,date:'2026-10-02',inv:[{no:'INV-8602',debtor:'DBT-0158',date:'2026-09-28',due:'2026-11-30',val:260000},{no:'',debtor:'DBT-0091',date:'2026-09-29',due:'2026-11-30',val:0}]};
+  $('#drawer').innerHTML=`<div class="drawer-h"><div><div class="crumb">${FAC.id} · Business ID BIZ-100482</div><h2>New trade</h2></div><button class="icon-btn" onclick="closeDrawer()">✕</button></div>
+  <div class="drawer-b">
+    <div class="fgrid"><div class="field"><label>Proposed transaction date</label><input type="date" value="${draft.date}" onchange="draft.date=this.value"></div>
+    <div class="field"><label>Financing period — <span id="dLbl">${draft.days}</span> days</label><input type="range" min="15" max="180" step="5" value="${draft.days}" oninput="draft.days=+this.value;$('#dLbl').textContent=this.value;calcTrade()"></div></div>
+    <div class="flex between mt8"><h3 style="font-size:15px">Invoices</h3><button class="btn btn-ghost btn-sm" onclick="draft.inv.push({no:'',debtor:'DBT-0137',date:'2026-09-30',due:'2026-12-15',val:0});drawInv()">+ Add invoice</button></div>
+    <p class="hint">Combine invoices from any of your approved debtors. Trade value is calculated automatically — it can't be typed in.</p>
+    <div class="inv-row mt12" style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em"><span>Debtor</span><span>Invoice #</span><span>Invoice date</span><span>Due date</span><span>Value (SAR)</span><span></span></div>
+    <div id="invRows"></div>
+    <div class="drop mt12">⬆ Drop invoice PDFs here — auto-matched to rows by invoice number</div>
+    <div id="checks" class="mt16"></div>
+    <div class="econ mt16" id="econBox"></div>
+  </div>
+  <div class="drawer-f"><span class="muted" style="margin-right:auto;font-size:12px">Saved as draft automatically</span><button class="btn btn-ghost" onclick="closeDrawer()">Save draft</button><button class="btn btn-primary" id="submitTrade" onclick="submitTrade()">Submit for review</button></div>`;
+  $('#scrim').classList.add('on');$('#drawer').classList.add('on');drawInv();
+}
+function drawInv(){
+  $('#invRows').innerHTML=draft.inv.map((i,k)=>`<div class="inv-row" id="ir${k}">
+    <select onchange="draft.inv[${k}].debtor=this.value;calcTrade()">${DEBTORS.map(d=>`<option value="${d.id}" ${d.id===i.debtor?'selected':''}>${d.name}</option>`).join('')}</select>
+    <input placeholder="INV-…" value="${i.no}" oninput="draft.inv[${k}].no=this.value;calcTrade()">
+    <input type="date" value="${i.date}" onchange="draft.inv[${k}].date=this.value;calcTrade()">
+    <input type="date" value="${i.due}" onchange="draft.inv[${k}].due=this.value">
+    <input type="number" placeholder="0" value="${i.val||''}" oninput="draft.inv[${k}].val=+this.value;calcTrade()">
+    <button class="x" onclick="draft.inv.splice(${k},1);drawInv()">×</button></div>`).join('');
+  calcTrade();
+}
+function calcTrade(){
+  const rv=draft.inv.reduce((a,i)=>a+(+i.val||0),0);const e=econ(rv||0,draft.days,FAC.rate);const u=util();
+  const allInv=TRADES.flatMap(t=>t.inv);
+  const msgs=[];let block=false;
+  draft.inv.forEach((i,k)=>{const dup=i.no&&allInv.find(x=>x.no.toLowerCase()===i.no.toLowerCase()&&x.debtor===i.debtor);const row=$('#ir'+k);if(row)row.classList.toggle('dup',!!dup);if(dup)msgs.push(['a-red',`Possible duplicate: <b>${i.no}</b> for ${dname(i.debtor)} already exists. Aqaar will be notified before this trade proceeds (REQ_055).`])});
+  const per={};draft.inv.forEach(i=>per[i.debtor]=(per[i.debtor]||0)+(+i.val||0));
+  Object.entries(per).forEach(([d,v])=>{const db=DEBTORS.find(x=>x.id===d);const avail=db.cap-debtorUse(d);if(v>avail){block=true;msgs.push(['a-red',`Debtor cap exceeded for <b>${db.name}</b>: SAR ${fmt(v)} requested vs SAR ${fmt(avail)} available under this facility.`])}});
+  if(rv>u.avail){block=true;msgs.push(['a-amber',`Trade value exceeds your available limit by <b>SAR ${fmt(rv-u.avail)}</b>. It will be held as <b>Limit Check Failed</b> — <a style="cursor:pointer" onclick="closeDrawer();go('increase')">request a limit increase</a>.`])}
+  if(!msgs.length&&rv>0)msgs.push(['a-green',`All checks passed — within facility limit and every debtor cap. Goes straight to document review.`]);
+  const usedPct=u.used/FAC.limit*100,pendPct=u.pending/FAC.limit*100,newPct=Math.min(rv/FAC.limit*100,100-usedPct-pendPct);
+  $('#checks').innerHTML=msgs.map(m=>`<div class="alert ${m[0]} mt8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div>${m[1]}</div></div>`).join('')+
+   `<div class="lim"><div class="flex between" style="font-size:12.5px"><b>Facility limit impact</b><span class="muted">SAR ${fmt(u.used+u.pending+rv)} / ${fmt(FAC.limit)}</span></div><div class="bar mt8"><i style="width:${usedPct}%;background:var(--emerald)"></i><i style="width:${pendPct}%;background:var(--gold)"></i><i style="width:${Math.max(newPct,0)}%;background:${rv>u.avail?'var(--red)':'#5FB39F'};transition:width .4s"></i></div><div class="lim-legend"><span><i style="background:var(--emerald)"></i>Active</span><span><i style="background:var(--gold)"></i>Reserved</span><span><i style="background:#5FB39F"></i>This trade</span></div></div>`;
+  $('#econBox').innerHTML=`<div class="flex between"><div><div style="font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.08em">You receive today</div><div class="big">SAR ${fmt(e.disb)}</div></div><div style="text-align:right"><div style="font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.08em">You repay on day ${draft.days}</div><div class="big" style="color:#fff">SAR ${fmt(rv)}</div></div></div>
+   <div class="mt12"><div class="row"><span>Trade value (sum of invoices)</span><b>SAR ${fmt(rv)}</b></div><div class="row"><span>Profit periods / year (365 ÷ ${draft.days})</span><b>${e.periods.toFixed(3)}</b></div><div class="row"><span>Effective rate (${(FAC.rate*100)}% ÷ periods)</span><b>${(e.eff*100).toFixed(4)}%</b></div><div class="row"><span>Profit</span><b>SAR ${fmt(e.profit)}</b></div><div class="row"><span>Daily profit (informational)</span><b>SAR ${fmt(e.daily)}</b></div><div class="row"><span>Admin fee</span><b>TBC (PRE_005)</b></div></div>
+   <p style="font-size:11.5px;opacity:.6;margin-top:10px">Indicative — final rate and invoice acceptance confirmed by Aqaar on approval.</p>`;
+  const b=$('#submitTrade');if(b)b.disabled=rv<=0||draft.inv.some(i=>!i.no||!i.val);
+}
+function submitTrade(){
+  const rv=draft.inv.reduce((a,i)=>a+(+i.val||0),0);const u=util();
+  const id='TRD-'+(1060+TRADES.length);
+  TRADES.push({id,days:draft.days,disb:null,status:rv>u.avail?'Limit Check Failed':'Pending Document Review',inv:draft.inv.map(i=>({...i,paid:0}))});
+  $('#navTrades').textContent=TRADES.filter(t=>t.status!=='Paid / Closed').length;
+  closeDrawer();toast(`<b>${id}</b> submitted — ${rv>u.avail?'limit check failed, email sent':'assigned to Aqaar Reviewer'}`);go('trade',id);
+}
+function closeDrawer(){$('#scrim').classList.remove('on');$('#drawer').classList.remove('on')}
+
+/* ================= REPAYMENTS ================= */
+let alloc={};
+function repay(){
+  const open=TRADES.filter(t=>t.disb&&t.status!=='Paid / Closed').flatMap(t=>t.inv.filter(i=>i.val>i.paid).map(i=>({...i,trade:t.id})));
+  return `<div class="page-head"><div><div class="crumb">Repayments · ${FAC.id}</div><h1>Make a repayment</h1><p>One payment, allocated across any unpaid invoices in any trade. You'll get a single reference for your bank transfer.</p></div></div>
+  <div class="alert a-blue" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div>Payments are confirmed only when Aqaar matches your bank transfer to the <b>Repayment Request Reference</b>. Partial payments per invoice are allowed.</div></div>
+  <div class="card"><div class="card-b tbl-wrap"><table><thead><tr><th></th><th>Invoice</th><th>Trade</th><th>Debtor</th><th>Due</th><th class="num">Outstanding</th><th class="num">Apply now (SAR)</th></tr></thead><tbody>
+  ${open.map(i=>{const k=i.trade+'|'+i.no;const out=i.val-i.paid;return `<tr><td><input type="checkbox" class="cb" ${alloc[k]!=null?'checked':''} onchange="toggleAlloc('${k}',${out},this.checked)"></td><td><b>${i.no}</b>${i.paid?'<div class="hint">'+fmt(i.paid)+' already paid</div>':''}</td><td>${i.trade}</td><td>${dname(i.debtor)}</td><td>${dfmt(i.due)}</td><td class="num">${fmt(out)}</td><td class="num"><input class="alloc-input" id="a_${k.replace(/\W/g,'')}" ${alloc[k]==null?'disabled':''} value="${alloc[k]??''}" oninput="setAlloc('${k}',${out},this)"></td></tr>`}).join('')}
+  </tbody></table></div></div>
+  <div class="card sticky-sum"><div class="card-b flex between" style="flex-wrap:wrap"><div><div class="muted" style="font-size:12px">Total to transfer</div><div class="serif" style="font-size:30px" id="allocTotal">SAR 0</div><div class="hint" id="allocMeta">Select invoices above</div></div><button class="btn btn-gold" id="genRef" disabled onclick="genRef()">Generate payment reference →</button></div></div>
+  <div id="refOut"></div>
+  <div class="card mt16"><div class="card-h"><h3>Repayment history</h3></div><div class="card-b tbl-wrap"><table><thead><tr><th>Reference</th><th>Submitted</th><th>Allocations</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody id="repHist">${histRows()}</tbody></table></div></div>`;
+}
+function histRows(){return REPAYS.map(r=>`<tr><td class="mono">${r.ref}</td><td>${dfmt(r.date)}</td><td>${r.lines} invoice(s)</td><td class="num">SAR ${fmt(r.amount)}</td><td>${chip(r.status)}</td></tr>`).join('')}
+function toggleAlloc(k,out,on){if(on)alloc[k]=out;else delete alloc[k];const el=$('#a_'+k.replace(/\W/g,''));el.disabled=!on;el.value=on?out:'';sumAlloc()}
+function setAlloc(k,out,el){const v=+el.value||0;alloc[k]=v;el.classList.toggle('err',v>out||v<=0);sumAlloc()}
+function sumAlloc(){const keys=Object.keys(alloc);const tot=keys.reduce((a,k)=>a+alloc[k],0);const trades=new Set(keys.map(k=>k.split('|')[0]));const bad=document.querySelectorAll('.alloc-input.err').length;
+  $('#allocTotal').textContent='SAR '+fmt(tot);$('#allocMeta').innerHTML=keys.length?`${keys.length} invoice(s) across ${trades.size} trade(s)${bad?' · <span style="color:var(--red)">an amount exceeds the outstanding balance</span>':''}`:'Select invoices above';$('#genRef').disabled=!keys.length||bad||tot<=0}
+function genRef(){
+  const tot=Object.values(alloc).reduce((a,b)=>a+b,0);const ref='RRQ-26-0930-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  REPAYS.unshift({ref,date:'2026-09-30',amount:tot,lines:Object.keys(alloc).length,status:'Pending Payment Verification'});
+  $('#refOut').innerHTML=`<div class="ref-box mt16"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.1em">Your Repayment Request Reference</div><div class="code">${ref}</div>
+  <div class="grid g3" style="text-align:left;max-width:720px;margin:0 auto"><div><div class="hint">Amount</div><b>SAR ${fmt(tot)}</b></div><div><div class="hint">Beneficiary</div><b>Aqaar Finance — Collections</b></div><div><div class="hint">IBAN</div><b class="mono">SA03 8000 0000 6080 1016 7519</b></div></div>
+  <div class="alert a-amber mt16" style="text-align:left;max-width:720px;margin:16px auto 0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>Put <b>${ref}</b> in your bank transfer remark — not a Trade ID. Your invoices update once Aqaar reconciles the bank statement.</div></div>
+  <div class="flex mt16" style="justify-content:center"><button class="btn btn-primary" onclick="navigator.clipboard&&navigator.clipboard.writeText('${ref}');toast('Reference copied')">Copy reference</button><button class="btn btn-ghost" onclick="toast('Payment instruction PDF — generated server-side in build')">Download instruction</button></div></div>`;
+  $('#repHist').innerHTML=histRows();alloc={};document.querySelectorAll('.cb').forEach(c=>c.checked=false);document.querySelectorAll('.alloc-input').forEach(i=>{i.value='';i.disabled=true});sumAlloc();
+  toast('Repayment request <b>'+ref+'</b> created — status: Pending Payment Verification');$('#refOut').scrollIntoView({behavior:'smooth',block:'center'});
+}
+repay.after=()=>{alloc={}};
+
+/* ================= DEBTORS ================= */
+function debtors(){
+  return `<div class="page-head"><div><div class="crumb">${FAC.id}</div><h1>Debtors</h1><p>Your counterparties, their exposure caps and risk mitigation under this facility.</p></div><button class="btn btn-ghost" onclick="toast('Adding debtors after approval — subject to PRE_010')">+ Add debtor</button></div>
+  <div class="grid g2">${DEBTORS.map(d=>{const u=debtorUse(d.id);const pct=u/d.cap*100;return `<div class="card"><div class="card-b"><div class="flex between"><div><b style="font-size:15px">${d.name}</b><div class="hint">CR ${d.cr} · ${d.id}</div></div>${chip('Approved')}</div>
+    <div class="flex between mt16" style="font-size:13px"><span class="muted">Exposure cap usage</span><b>${pct.toFixed(0)}%</b></div><div class="bar mt8"><i data-w="${pct}%" style="width:0;background:${pct>85?'var(--red)':pct>60?'var(--gold)':'var(--emerald2)'}"></i></div>
+    <div class="grid g3 mt16" style="gap:10px;font-size:12.5px"><div><div class="hint">Cap</div><b>SAR ${fmt(d.cap)}</b></div><div><div class="hint">Outstanding</div><b>SAR ${fmt(u)}</b></div><div><div class="hint">Available</div><b>SAR ${fmt(d.cap-u)}</b></div></div>
+    <div class="alert ${d.mit==='Insurance'?'a-green':d.mit.startsWith('Risk')?'a-amber':'a-blue'} mt16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><b>${d.mit}</b> — ${d.mitDetail}</div></div></div></div>`}).join('')}</div>`;
+}
+
+/* ================= FACILITY REQUEST WIZARD ================= */
+let wz=0;let wDebtors=[{name:'Al-Rashed Trading Co.',cr:'1010458821',cap:1500000,mit:'ins'},{name:'Hail Agri Foods',cr:'3350019284',cap:600000,mit:''}];
+const WSTEPS=['Business','Financials','Debtors & caps','Documents','Review & submit'];
+function apply(){
+  const body=[
+    `<div class="fgrid"><div class="field"><label>Business ID</label><input value="BIZ-100482"><div class="hint" style="color:var(--green)">✓ Verified — approved, active business profile</div></div><div class="field"><label>Legal entity</label><input value="Al Noor Trading Group LLC" disabled></div>
+     <div class="field"><label>Requested facility limit (SAR)</label><input value="5,000,000"></div><div class="field"><label>Intended use</label><select><option>Invoice discounting — working capital</option><option>Supplier payments</option></select></div>
+     <div class="field"><label>Sector</label><select><option>Wholesale &amp; distribution</option><option>Construction materials</option><option>Healthcare supplies</option></select></div><div class="field"><label>Years trading</label><input value="11"></div></div>
+     <p class="hint">Full field list pending Aqaar confirmation (PRE_001). Onboarding reuses the existing borrower &amp; business profile — no re-entry.</p>`,
+    `<div class="fgrid"><div class="field"><label>Annual revenue (SAR)</label><input value="84,000,000"></div><div class="field"><label>Average debtor days</label><input value="68"></div>
+     <div class="field"><label>Existing financing obligations (SAR)</label><input value="2,400,000"></div><div class="field"><label>Requested rate basis</label><select><option>Fixed annual profit rate</option></select></div></div>
+     <div class="card mt8" style="box-shadow:none"><div class="card-b flex between"><div><b>Indicative risk score</b><div class="hint">Scoring rules subject to PRE_002 — shown as placeholder</div></div><div class="serif" style="font-size:34px;color:var(--emerald)">B+ <span style="font-size:14px;color:var(--muted)">/ 72</span></div></div></div>`,
+    `<p class="muted" style="margin-bottom:12px">Declare every debtor you plan to trade against. Each needs an exposure cap and one form of risk mitigation — the request can't be submitted without it.</p><div id="wDeb"></div><button class="btn btn-ghost btn-sm" onclick="wDebtors.push({name:'',cr:'',cap:0,mit:''});drawWDeb()">+ Declare another debtor</button>`,
+    `<div class="drop">⬆ Drag &amp; drop or click to upload supporting documents<br><span class="hint">PDF, XLSX, JPG · max 20 MB each</span></div>
+     ${['Audited financial statements 2025.pdf','Commercial registration.pdf','Bank statements (6 months).pdf','Aged debtors report.xlsx'].map(f=>`<div class="doc-row"><div class="ext">${f.endsWith('xlsx')?'XLS':'PDF'}</div><div style="flex:1"><b style="font-size:13px">${f}</b><div class="hint">Uploaded · virus-scanned</div></div><span class="chip c-green">Ready</span></div>`).join('')}`,
+    `<div id="wReview"></div>`
+  ];
+  return `<div class="page-head"><div><div class="crumb">New request</div><h1>Credit facility request</h1><p>Takes about 10 minutes. Your progress saves automatically.</p></div></div>
+  <div class="steps">${WSTEPS.map((s,i)=>`<div class="step ${i===wz?'on':i<wz?'ok':''}" onclick="wz=${i};render()"><i>${i<wz?'✓':i+1}</i>${s}</div>`).join('')}</div>
+  <div class="card"><div class="card-b">${body[wz]}</div>
+  <div class="drawer-f" style="border-radius:0 0 16px 16px"><button class="btn btn-ghost" ${wz===0?'disabled':''} onclick="wz--;render()">← Back</button>${wz<4?`<button class="btn btn-primary" onclick="wz++;render()">Continue →</button>`:`<button class="btn btn-primary" id="wSubmit" onclick="wSubmit()">Submit to Aqaar</button>`}</div></div>`;
+}
+apply.after=()=>{if(wz===2)drawWDeb();if(wz===4)drawReview()};
+function drawWDeb(){
+  $('#wDeb').innerHTML=wDebtors.map((d,k)=>`<div class="debtor-card ${d.mit?'':'bad'}"><div class="fgrid"><div class="field"><label>Debtor company name</label><input value="${d.name}" oninput="wDebtors[${k}].name=this.value">${k===0?'<div class="hint" style="color:var(--blue)">↺ Matched existing debtor record by CR number — no duplicate created</div>':''}</div><div class="field"><label>Commercial registration no.</label><input value="${d.cr}" oninput="wDebtors[${k}].cr=this.value"></div>
+  <div class="field"><label>Exposure cap (SAR)</label><input value="${d.cap?fmt(d.cap):''}"></div><div class="field"><label>Risk mitigation</label><div class="seg">${[['ins','Insurance'],['sec','Alt. security'],['mgmt','Risk accepted by mgmt']].map(o=>`<button class="${d.mit===o[0]?'on':''}" onclick="wDebtors[${k}].mit='${o[0]}';drawWDeb()">${o[1]}</button>`).join('')}</div></div></div>
+  ${d.mit==='ins'?'<div class="doc-row"><div class="ext">PDF</div><div style="flex:1"><b style="font-size:13px">Insurer acceptance letter.pdf</b></div><span class="chip c-green">Attached</span></div>':d.mit==='sec'?'<div class="field"><select><option>Cession of receivables</option><option>Mortgage</option><option>Other (list TBC — PRE_012)</option></select></div>':d.mit==='mgmt'?'<div class="alert a-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><div>Aqaar Management will be asked to formally accept this risk.</div></div>':'<div class="alert a-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div>No risk mitigation selected — submission blocked and Aqaar Management notified (REQ_034).</div></div>'}</div>`).join('');
+}
+function drawReview(){
+  const missing=wDebtors.filter(d=>!d.mit).length;
+  $('#wReview').innerHTML=`<div class="grid g3">${[['Requested limit','SAR 5,000,000'],['Debtors declared',wDebtors.length],['Documents','4 uploaded']].map(k=>`<div class="card kpi" style="box-shadow:none"><div class="lbl">${k[0]}</div><div class="val" style="font-size:22px">${k[1]}</div></div>`).join('')}</div>
+  ${missing?`<div class="alert a-red mt16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div><b>${missing} debtor(s) missing risk mitigation.</b> <a style="cursor:pointer" onclick="wz=2;render()">Fix now →</a></div></div>`:`<div class="alert a-green mt16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div>Ready to submit. You'll be notified by email at each review stage.</div></div>`}
+  <label class="flex mt16" style="font-size:13px"><input type="checkbox" class="cb" checked> I confirm the information provided is accurate and complete.</label>`;
+  $('#wSubmit').disabled=!!missing;
+}
+function wSubmit(){wz=0;toast('Facility request <b>CFR-00418</b> submitted — assigned to Aqaar Reviewer');go('dashboard')}
+
+/* ================= LIMIT INCREASE ================= */
+function increase(){
+  return `<div class="page-head"><div><div class="crumb">${FAC.id}</div><h1>Request a limit increase</h1><p>Linked to your existing facility. Optionally link the trade that's waiting on it.</p></div></div>
+  <div class="grid g-main"><div class="card"><div class="card-b">
+    <div class="fgrid"><div class="field"><label>Current approved limit</label><input value="SAR ${fmt(FAC.limit)}" disabled></div><div class="field"><label>Additional limit requested (SAR)</label><input id="incAmt" value="1,000,000" oninput="incCalc()"></div>
+    <div class="field" style="grid-column:1/-1"><label>Link to blocked trade (optional)</label><select><option>— None —</option>${TRADES.filter(t=>t.status==='Limit Check Failed').map(t=>`<option>${t.id} · SAR ${fmt(tval(t))}</option>`).join('')}<option>TRD-1058 · SAR 420,000</option></select></div>
+    <div class="field" style="grid-column:1/-1"><label>Justification</label><textarea style="width:100%;min-height:110px;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit">Q4 seasonal demand from Najd Cement and Gulf Medical — two new purchase orders totalling SAR 2.1m confirmed for November delivery.</textarea></div></div>
+    <div class="drop">⬆ Upload supporting documents (purchase orders, updated management accounts)</div>
+  </div><div class="drawer-f" style="border-radius:0 0 16px 16px"><button class="btn btn-primary" onclick="toast('Limit increase request <b>CLI-00077</b> submitted');go('facility')">Submit request</button></div></div>
+  <div class="card"><div class="card-h"><h3>After approval</h3></div><div class="card-b" id="incSide"></div></div></div>`;
+}
+increase.after=()=>incCalc();
+function incCalc(){const add=+($('#incAmt').value||'0').replace(/\D/g,'');const u=util();const nl=FAC.limit+add;
+  $('#incSide').innerHTML=`<div class="kpi" style="padding:0"><div class="lbl">New approved limit</div><div class="val">${sar(nl)}</div><div class="foot">Available would rise to SAR ${fmt(nl-u.used-u.pending)}</div></div><div class="bar mt16"><i style="width:${u.used/nl*100}%;background:var(--emerald)"></i><i style="width:${u.pending/nl*100}%;background:var(--gold)"></i></div>
+  <ul class="tl mt16"><li><div><b>Pending trades re-evaluated automatically</b><small>Linked trades proceed to review if they now fit (REQ_078–079)</small></div></li><li><div><b>Full audit trail</b><small>Previous limit, increase, approver &amp; date recorded</small></div></li></ul>`}
+
+/* ================= NOTIFICATIONS ================= */
+function notifs(){
+  const n=[[1,'var(--gold2)','#8A6A25','Tawarruq in progress — TRD-1051','Commodity purchase confirmed. Certificate generation under way.','Today, 11:42'],[1,'var(--amber2)','var(--amber)','Trade received — TRD-1058','Your trade passed the facility limit check and is with the Aqaar Reviewer.','25 Sep'],[1,'var(--green2)','var(--green)','Payment verified — RRQ-26-0917-4KD2','SAR 150,000 applied to INV-8120 (TRD-1042). Invoice now Partially Paid.','18 Sep'],[0,'var(--blue2)','var(--blue)','Funds disbursed — TRD-1047','SAR 509,745 sent to your account ending 4471. Repayment due 31 Oct 2026.','1 Sep'],[0,'var(--emerald3)','var(--emerald)','Facility limit increased','Your facility FAC-00231 is now SAR 5,000,000.','2 Sep']];
+  return `<div class="page-head"><div><h1>Notifications</h1><p>Every email Aqaar sends you, in one place. Templates pending PRE_008.</p></div><button class="btn btn-ghost" onclick="toast('All marked as read')">Mark all read</button></div>
+  <div class="card">${n.map(x=>`<div class="notif ${x[0]?'unread':''}"><div class="ic" style="background:${x[1]};color:${x[2]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div style="flex:1"><b>${x[3]}</b><div class="muted" style="font-size:13px">${x[4]}</div></div><span class="hint">${x[5]}</span></div>`).join('')}</div>`;
+}
+
+/* ================= TERM FINANCE (BRD v3.2) ================= */
+const TF={id:'TFN-00087',amount:2400000,rate:0.09,months:24,released:'2026-03-15',purpose:'Warehouse expansion — Riyadh 2nd Industrial City',status:'Repaying'};
+const TF_LC=['Application submitted','Under review','Approved','Tawarruq','Funds released','Repaying','Settled'];
+function tfSched(){const r=TF.rate/12,n=TF.months,P=TF.amount;const inst=P*r/(1-Math.pow(1+r,-n));let bal=P;const rows=[];
+  for(let k=1;k<=n;k++){const prof=bal*r,prin=inst-prof;bal-=prin;const d=new Date(TF.released);d.setMonth(d.getMonth()+k);rows.push({k,date:d,inst,prof,prin,bal:Math.max(bal,0),paid:d<=TODAY})}return rows}
+function tfOut(){const s=tfSched();const last=s.filter(x=>x.paid).pop();return last?last.bal:TF.amount}
+function tfNext(){return tfSched().find(x=>!x.paid)}
+function tf(){
+  const s=tfSched(),paid=s.filter(x=>x.paid),nx=tfNext(),idx=TF_LC.indexOf(TF.status);
+  const pct=paid.length/s.length*100;
+  return `<div class="page-head"><div><div class="crumb">Term Finance</div><h1>${TF.id}</h1><p>${TF.purpose}</p></div>
+    <div class="flex"><button class="btn btn-ghost" onclick="toast('Statement PDF — generated by Beezr, downloaded via API')">Download statement</button><button class="btn btn-primary" onclick="go('tfapply')">+ Apply for new term finance</button></div></div>
+  <div class="grid g4">
+    <div class="card kpi hero"><div class="lbl">Amount financed</div><div class="val"><small>SAR</small><span data-count="${TF.amount}">0</span></div><div class="foot">${TF.months} months · ${(TF.rate*100).toFixed(1)}% p.a. profit rate</div></div>
+    <div class="card kpi"><div class="lbl">Outstanding balance</div><div class="val"><small>SAR</small><span data-count="${Math.round(tfOut())}">0</span></div><div class="foot">${paid.length} of ${s.length} instalments paid</div></div>
+    <div class="card kpi"><div class="lbl">Next instalment</div><div class="val"><small>SAR</small>${fmt(nx.inst)}</div><div class="foot">Due ${dfmt(nx.date)}</div></div>
+    <div class="card kpi"><div class="lbl">Funds released</div><div class="val" style="font-size:22px">${dfmt(TF.released)}</div><div class="foot">After Tawarruq completed</div></div>
+  </div>
+  <div class="card mt16"><div class="card-h"><h3>Where this finance is</h3><span class="muted" style="font-size:12px">Status comes from Beezr</span></div>
+    <div class="card-b"><div class="journey">${TF_LC.map((x,i)=>`<div class="j-step ${i<idx?'done':i===idx?'now':''}"><div class="j-dot">${i<idx?'✓':i+1}</div><span>${x}</span></div>`).join('')}</div>
+    <div class="flex between mt16" style="font-size:13px"><span class="muted">Repaid so far</span><b>${pct.toFixed(0)}%</b></div><div class="bar mt8"><i data-w="${pct}%" style="width:0;background:var(--emerald2)"></i></div></div></div>
+  <div class="grid g-main mt16">
+    <div class="card"><div class="card-h"><h3>Repayment schedule (amortisation)</h3><span class="hint">Calculated by Beezr · shown read-only</span></div>
+      <div class="card-b"><div class="sched"><table><thead><tr><th>#</th><th>Due date</th><th class="num">Instalment</th><th class="num">Profit</th><th class="num">Capital</th><th class="num">Balance after</th><th>Status</th></tr></thead><tbody>
+      ${s.map(x=>`<tr class="${x===nx?'today':''}"><td>${x.k}</td><td>${dfmt(x.date)}</td><td class="num">${fmt(x.inst)}</td><td class="num">${fmt(x.prof)}</td><td class="num">${fmt(x.prin)}</td><td class="num">${fmt(x.bal)}</td><td>${x.paid?'<span class="chip c-green">Paid</span>':x===nx?'<span class="chip c-gold">Next due</span>':'<span class="chip c-grey">Upcoming</span>'}</td></tr>`).join('')}
+      </tbody></table></div></div></div>
+    <div class="card"><div class="card-h"><h3>Tawarruq record</h3></div><div class="card-b"><ul class="tl">
+      ${['Commodity purchased by Aqaar','Ownership certificate issued','Sold to customer on deferred terms','Customer sells commodity to a third party','Cash proceeds released to customer'].map(x=>`<li><div class="ic" style="background:var(--green2);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div><b>${x}</b><small>Completed · Mar 2026</small></div></li>`).join('')}
+      </ul><div class="alert a-blue mt12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div>Instalments are paid by debit order or bank transfer and reconciled by Aqaar in Beezr. The portal shows the result.</div></div></div></div>
+  </div>`;
+}
+let tz=0;const TSTEPS=['Your business','Finance needed','Documents','Review & submit'];
+function tfapply(){
+  const body=[
+    `<div class="alert a-green" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>We already have your profile.</b> Business and borrower details come from your Business Profile, so there is nothing to re-type. <a style="cursor:pointer" onclick="go('profile')">Review profile →</a></div></div>
+     <div class="fgrid"><div class="field"><label>Business ID</label><input value="BIZ-100482" disabled></div><div class="field"><label>Legal entity</label><input value="Al Noor Trading Group LLC" disabled></div>
+     <div class="field"><label>Authorised signatory</label><input value="Ahmed Al-Mutairi" disabled></div><div class="field"><label>Profile status</label><input value="Approved · last updated 12 Jun 2026" disabled></div></div>`,
+    `<div class="fgrid"><div class="field"><label>Amount requested (SAR)</label><input id="tAmt" value="1,500,000" oninput="tfCalc()"></div><div class="field"><label>Term (months)</label><select id="tMon" onchange="tfCalc()"><option>12</option><option>18</option><option selected>24</option><option>36</option></select></div>
+     <div class="field"><label>Purpose</label><select><option>Capital expenditure / equipment</option><option>Expansion</option><option>Working capital</option></select></div><div class="field"><label>Preferred repayment</label><select><option>Monthly instalments</option><option>Quarterly instalments</option></select></div></div>
+     <div class="econ mt8" id="tEcon"></div><p class="hint mt8">Indicative only. Aqaar sets the final rate, fees and schedule in Beezr on approval.</p>`,
+    `<div class="drop">⬆ Drag &amp; drop or click to upload supporting documents<br><span class="hint">PDF, XLSX, JPG · max 20 MB each</span></div>
+     ${['Management accounts (YTD 2026).pdf','Quotation — racking & forklifts.pdf','Bank statements (6 months).pdf'].map(f=>`<div class="doc-row"><div class="ext">PDF</div><div style="flex:1"><b style="font-size:13px">${f}</b><div class="hint">Uploaded · passed to Beezr against this application</div></div><span class="chip c-green">Ready</span></div>`).join('')}
+     <div class="doc-row"><div class="ext" style="background:var(--green2);color:var(--green)">✓</div><div style="flex:1"><b style="font-size:13px">Commercial registration, financial statements 2025</b><div class="hint">Re-used from your Business Profile</div></div><span class="chip c-blue">On file</span></div>`,
+    `<div class="grid g3">${[['Amount','SAR 1,500,000'],['Term','24 months'],['Documents','3 new · 2 on file']].map(k=>`<div class="card kpi" style="box-shadow:none"><div class="lbl">${k[0]}</div><div class="val" style="font-size:22px">${k[1]}</div></div>`).join('')}</div>
+     <div class="alert a-blue mt16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div>After you submit, Aqaar reviews and approves, completes the Tawarruq, then releases funds. You can follow every step on <b>My Term Finance</b>.</div></div>
+     <label class="flex mt16" style="font-size:13px"><input type="checkbox" class="cb" checked> I confirm the information provided is accurate and complete.</label>`
+  ];
+  return `<div class="page-head"><div><div class="crumb">Term Finance · new application</div><h1>Apply for term finance</h1><p>A fixed amount, repaid in instalments over an agreed term.</p></div></div>
+  <div class="steps">${TSTEPS.map((x,i)=>`<div class="step ${i===tz?'on':i<tz?'ok':''}" onclick="tz=${i};render()"><i>${i<tz?'✓':i+1}</i>${x}</div>`).join('')}</div>
+  <div class="card"><div class="card-b">${body[tz]}</div>
+  <div class="drawer-f" style="border-radius:0 0 16px 16px"><button class="btn btn-ghost" ${tz===0?'disabled':''} onclick="tz--;render()">← Back</button>${tz<3?`<button class="btn btn-primary" onclick="tz++;render()">Continue →</button>`:`<button class="btn btn-primary" onclick="tz=0;toast('Term finance application <b>TFA-00142</b> submitted — with Aqaar for review');go('tf')">Submit to Aqaar</button>`}</div></div>`;
+}
+tfapply.after=()=>{if(tz===1)tfCalc()};
+function tfCalc(){const P=+($('#tAmt').value||'0').replace(/\D/g,'');const n=+$('#tMon').value;const r=TF.rate/12;const inst=P?P*r/(1-Math.pow(1+r,-n)):0;
+  $('#tEcon').innerHTML=`<div class="row"><span>Indicative monthly instalment</span><b class="big">SAR ${fmt(inst)}</b></div><div class="row"><span>Total repayable</span><b>SAR ${fmt(inst*n)}</b></div><div class="row"><span>Total profit</span><b>SAR ${fmt(inst*n-P)}</b></div><div class="row"><span>Indicative rate</span><b>${(TF.rate*100).toFixed(1)}% p.a.</b></div>`}
+function profile(){
+  return `<div class="page-head"><div><div class="crumb">Shared by both products</div><h1>Business profile</h1><p>Captured once. Term Finance and Invoice Discounting both use it.</p></div><button class="btn btn-ghost" onclick="toast('Change request sent to Aqaar for approval')">Request a change</button></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-h"><h3>Business</h3>${chip('Approved')}</div><div class="card-b"><div class="fgrid">
+      ${[['Business ID','BIZ-100482'],['Legal entity','Al Noor Trading Group LLC'],['Commercial registration','1010334417'],['Sector','Wholesale & distribution'],['Years trading','11'],['Registered address','King Fahd Rd, Riyadh']].map(f=>`<div class="field"><label>${f[0]}</label><input value="${f[1]}" disabled></div>`).join('')}
+    </div></div></div>
+    <div class="card"><div class="card-h"><h3>Borrower / authorised signatory</h3>${chip('Approved')}</div><div class="card-b"><div class="fgrid">
+      ${[['Full name','Ahmed Al-Mutairi'],['Role','Chief Financial Officer'],['National ID','•••••• 4471'],['Mobile','+966 5• ••• 2290'],['Email','finance@alnoor-group.sa'],['KYC status','Verified']].map(f=>`<div class="field"><label>${f[0]}</label><input value="${f[1]}" disabled></div>`).join('')}
+    </div></div></div>
+  </div>
+  <div class="card mt16"><div class="card-h"><h3>Products you are approved for</h3></div><div class="card-b"><div class="grid g2">
+    <div class="alert a-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Term Finance</b>: ${TF.id}, repaying. <a style="cursor:pointer" onclick="go('tf')">Open →</a></div></div>
+    <div class="alert a-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Invoice Discounting</b>: ${FAC.id}, active. <a style="cursor:pointer" onclick="go('facility')">Open →</a></div></div>
+    </div><p class="hint mt12">A customer approved for only one product sees only that product's menu. Beezr tells the portal which products each customer has.</p></div></div>`;
+}
+
+render();
+</script>
+</body>
+</html>
